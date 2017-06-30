@@ -32,4 +32,8 @@ testem.log
 #System Files
 .DS_Store
 Thumbs.db
-certs/
+certs/*
+
+
+# exception to the rule
+!certs/.gitkeep 
