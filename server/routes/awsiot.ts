@@ -29,18 +29,22 @@ var thingShadows = awsIot.thingShadow({
 // completes.
 //
 thingShadows.on('connect', function() {
-   console.log('Connected to AWS IoT');
+   console.log('Connected to AWS IoT 22 22 22');
 });
 
 
 iotRouter.get("/ping", (request: Request, response: Response) => {
-  console.log("Server hit ping")
+  console.log("Server hit ping");
+  var currentTime = Date.now();
+  var deviceId = 'RPI_IOT_1';
+  thingShadows.publish('highTemperature', JSON.stringify({DeviceId: deviceId+'-'+currentTime, hashKey: currentTime, values: { temperature: 45, humidity: 400}}));
+
   thingShadows.on('connect', function() {
 //
 // After connecting to the AWS IoT platform, register interest in the
 // Thing Shadow named 'RGBLedLamp'.
 //
-    thingShadows.register( 'RGBLedLamp', {}, function() {
+    thingShadows.register( 'tdsensor', {}, function() {
 
 // Once registration is complete, update the Thing Shadow named
 // 'RGBLedLamp' with the latest device state and save the clientToken
@@ -48,9 +52,9 @@ iotRouter.get("/ping", (request: Request, response: Response) => {
 //
 // Thing shadow state
 //
-       var rgbLedLampState = {"state":{"desired":{"red":rval,"green":gval,"blue":bval}}};
+       var rgbLedLampState = {"hightemperature":{"temperature":'45'}};
 
-       clientTokenUpdate = thingShadows.update('RGBLedLamp', rgbLedLampState  );
+       clientTokenUpdate = thingShadows.update('tdsensor', rgbLedLampState  );
 //
 // The update method returns a clientToken; if non-null, this value will
 // be sent in a 'status' event when the operation completes, allowing you
