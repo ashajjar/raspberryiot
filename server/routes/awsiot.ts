@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 const iotRouter: Router = Router();
-
+var sensor = require('ds18x20');
 var clientTokenUpdate;
 var rval = 187;
 var gval = 114;
@@ -15,7 +15,7 @@ var thingShadows = awsIot.thingShadow({
 // The 'debug' option lets you see more information about the connection to
 // AWS IoT via console messages.  If you're having trouble connecting, try
 // setting this to 'true' for clues about what might be going wrong.
-//
+// rr
    debug: true,
 //
 // Replace 'XXX...' with your endpoint and 'YYY...' with your region
@@ -37,7 +37,19 @@ iotRouter.get("/ping", (request: Request, response: Response) => {
   console.log("Server hit ping");
   var currentTime = Date.now();
   var deviceId = 'RPI_IOT_1';
-  thingShadows.publish('highTemperature', JSON.stringify({DeviceId: deviceId+'-'+currentTime, hashKey: currentTime, values: { temperature: 45, humidity: 400}}));
+       var rgbLedLampState = {"hightemperature":{"temperature":'45'}};
+sensor.loadDriver(function (err) {
+    if (err) console.log('something went wrong loading the driver:', err)
+    else console.log('driver is loaded');
+});
+var listOfDeviceIds = sensor.list();
+console.log('list device = '+listOfDeviceIds);
+var tempObj = sensor.getAll();
+
+ for(var i in tempObj){
+  thingShadows.publish('highTemperature', JSON.stringify({DeviceId: i+'-'+currentTime, hashKey: currentTime, values: { temperature: tempObj[i]}})
+}
+
 
   thingShadows.on('connect', function() {
 //
@@ -51,8 +63,15 @@ iotRouter.get("/ping", (request: Request, response: Response) => {
 // so that we can correlate it with status or timeout events.
 //
 // Thing shadow state
-//
+
+
        var rgbLedLampState = {"hightemperature":{"temperature":'45'}};
+sensor.loadDriver(function (err) {
+    if (err) console.log('something went wrong loading the driver:', err)
+    else console.log('driver is loaded');
+});
+var listOfDeviceIds = sensor.list();
+console.log('list device = '+listOfDeviceIds);
 
        clientTokenUpdate = thingShadows.update('tdsensor', rgbLedLampState  );
 //
@@ -100,8 +119,7 @@ thingShadows.on('timeout',
 //
     });
   response.json({
-    text: "Hello Angular 2 Wew rwer",
-    title: "Greetings. hello Greeting 44444 r445ggg",
+    temperature: tempObj ,
   });
 });
 
