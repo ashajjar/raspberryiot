@@ -1,8 +1,11 @@
 import {Request, Response, Router} from "express";
+import {app} from "../app";
 
 const iotRouter: Router = Router();
 let awsIot = require('aws-iot-device-sdk');
 let path = require('path');
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 let thingShadows = awsIot.thingShadow({
   keyPath: path.join(__dirname, '/../../../certs/private.pem.key'),
   certPath: path.join(__dirname, '/../../../certs/certificate.pem.crt'),
@@ -33,6 +36,20 @@ iotRouter.get("/ping", (request: Request, response: Response) => {
   response.json({
     table_status: (now.getTime() - tableStatusTime.getTime() < TEN_SEC)
   });
+});
+
+io.on('connection', (socket) => {
+  
+  console.log('user connected');
+  
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  });
+  
+  socket.on('add-message', (message) => {
+    io.emit('message', {type: 'new-message', text: message});
+  });
+  
 });
 
 export {iotRouter};

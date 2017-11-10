@@ -10,7 +10,8 @@ import { publicRouter } from "./routes/public";
 import { userRouter } from "./routes/user";
 import { iotRouter } from "./routes/awsiot";
 const app: express.Application = express();
-
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 app.disable("x-powered-by");
 
 app.use(json());
