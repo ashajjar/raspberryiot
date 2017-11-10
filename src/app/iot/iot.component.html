@@ -1,3 +1,20 @@
-<p>
-  iot works!
-</p>
+<div class="">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="temp-container">
+                <h5>Temperature from Device - 1</h5>
+                <p class="temperature">
+                    {{temp1}}
+                    <small>&deg;C</small>
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <chart [options]="options" (load)="saveTemperature($event.context)"></chart>
+
+        </div>
+        <div class="col-sm-6">
+            <chart [options]="options1" (load)="saveHumidity($event.context)"></chart>
+        </div>
+    </div>
+</div>
