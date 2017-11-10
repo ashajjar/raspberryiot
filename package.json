@@ -1,5 +1,5 @@
 {
-  "name": "raspberryiot",
+  "name": "fussball_dashboard",
   "version": "1.0.0",
   "description": "Starter application of Raspberry IOT eith Angular2 & Express",
   "main": "server/app.js",
