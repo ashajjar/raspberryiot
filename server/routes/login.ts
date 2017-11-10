@@ -4,7 +4,7 @@ import { sign } from "jsonwebtoken";
 import { digest, length, secret } from "../config";
 
 const loginRouter: Router = Router();
-
+// test
 const user = {
     hashedPassword: "6fb3a68cb5fe34d0c2c9fc3807c8fa9bc0e7dd10023065ea4233d40a2d6bb4a" +
     "7e336a82f48bcb5a7cc95b8a590cf03a4a07615a226d09a89420a342584a" +
@@ -13,8 +13,8 @@ const user = {
     salt: "OxDZYpi9BBJUZTTaC/yuuF3Y634YZ90KjpNa+Km4qGgZXGI6vhSWW0T91" +
     "rharcQWIjG2uPZEPXiKGnSAQ73s352aom56AIYpYCfk7uNsd+7AzaQ6dxTnd9AzCCdIc/J" +
     "62JohpHPJ5eGHUJJy3PAgHYcfVzvBHnIQlTJCQdQAonQ=",
-    username: "john",
-};
+    username: "john 33",
+}; 
 
 loginRouter.post("/signup", (request: Request, response: Response, next: NextFunction) => {
     if (!request.body.hasOwnProperty("password")) {

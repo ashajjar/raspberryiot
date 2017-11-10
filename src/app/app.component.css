@@ -1,4 +1,8 @@
 .main {
-  width: 800px;
+  width: 100%;
   padding: 20px;
+}
+
+.temperature{
+  font-size: 90px;
 }
